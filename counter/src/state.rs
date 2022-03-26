@@ -44,6 +44,7 @@ pub struct Player {
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct Character {
+    pub id: i32,
     pub health: i32,
     pub abilities: [AbilityType; 2],
     pub pos-x: i8,
@@ -51,3 +52,6 @@ pub struct Character {
 }
 
 pub const STATE: Item<State> = Item::new("state");
+pub const CHARACTER: Item<Character> = Item::new("character");
+pub const BOARD: Item<Board> = Item::new("board");
+pub const TILE: Item<Tile> = Item::new("tile");

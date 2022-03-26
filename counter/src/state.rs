@@ -33,7 +33,7 @@ pub struct Tile {
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct Board {
-    pub owner: Addr,
+    pub host: Addr,
     pub mut layout: [[Tile{TileType:Normal{}, moveable: true, damage:0}; 8]; 8];,
 }
 

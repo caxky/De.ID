@@ -7,7 +7,7 @@ use cw_storage_plus::Item;
 pub enum TileType {
     Blockade {},
     DamageInducer { damage: i32 },
-    Normal {},
+    Normal {}, 
 }
 
 pub enum AbilityType {
@@ -34,7 +34,7 @@ pub struct Tile {
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct Board {
     pub owner: Addr,
-    pub layout: [[Tile; 8]; 8];,
+    pub mut layout: [[Tile{TileType:Normal{}, moveable: true, damage:0}; 8]; 8];,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -45,7 +45,9 @@ pub struct Player {
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct Character {
     pub health: i32,
-    pub abilities: [AbilityType; 2]
+    pub abilities: [AbilityType; 2],
+    pub pos-x: i8,
+    pub pos-y: i8,
 }
 
 pub const STATE: Item<State> = Item::new("state");

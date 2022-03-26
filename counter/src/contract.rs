@@ -28,6 +28,15 @@ pub fn instantiate(
         host: info.sender.clone(),
         layout: msg.board,
     }
+
+    let ch1 = Character {
+        id: 0,
+        health: 100,
+        abilities: [Fire, Electric],
+        pos-x: 0,
+        pos-y: 0,
+    }
+    
     set_contract_version(deps.storage, CONTRACT_NAME, CONTRACT_VERSION)?;
     STATE.save(deps.storage, &state)?;
     BOARD.save(deps.storage, &board)?;

@@ -3,31 +3,33 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct InstantiateMsg {
-    pub mut layout: [[Tile{TileType:Normal{}, moveable: true, damage:0}; 8]; 8];,
+    pub studentname: String,
+    pub studentid: i32,
+    pub universitites: Vec<String>,
+    pub degrees: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum ExecuteMsg {
-    Move { direction: i8 },
-    Attack { direction: i8 },
+    //NewStudentAcc { studentname: String, studentid: i32, universitites: Vec<String>, degrees: Vec<String> },
+    AddUniversity { studentid: i32, university: String },
+    RemoveUniversity { studentid: i32, university: String },
+    AddDegree { studentid: i32, degree: String },
+    RemoveDegree { studentid: i32, degree: String },
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum QueryMsg {
-    GetPos { id: i32 },
-    GetHealth { health: i32 },
+    GetStudentAcc { studentid: i32 },
 }
 
 // We define a custom struct for each query response
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-pub struct GetPosResponse {
-    pub pos-x: i8,
-    pub pos-y: i8,
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-pub struct GetHealthResponse {
-    pub health: i32,
+pub struct GetStudentAccResponse {
+    pub studentname: String,
+    pub studentid: i32,
+    pub universitites: Vec<String>,
+    pub degrees: Vec<String>,
 }

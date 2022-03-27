@@ -4,9 +4,8 @@ use cosmwasm_std::{to_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response,
 use cw2::set_contract_version;
 
 use crate::error::ContractError;
-use crate::msg::{GetHealthResponse, GetPosResponse, ExecuteMsg, InstantiateMsg, QueryMsg};
-use crate::state::{State, STATE};
-use crate::state::{Board, BOARD, Character, CHARACTER, Tile, TILE};
+use crate::msg::{GetStudentAccResponse, ExecuteMsg, InstantiateMsg, QueryMsg};
+use crate::state::{StudentAccreditation, STUDENTACC};
 
 // version info for migration info
 const CONTRACT_NAME: &str = "crates.io:counter";
@@ -19,34 +18,19 @@ pub fn instantiate(
     info: MessageInfo,
     msg: InstantiateMsg,
 ) -> Result<Response, ContractError> {
-    let state = State {
-        count: msg.count,
-        owner: info.sender.clone(),
+
+    let studentacc = StudentAccreditation {
+        studentname: msg.studentname,
+        studentid: msg.studentid,
+        universitites: msg.universitites,
+        degrees: msg.degrees,
     };
-
-    let board = Board {
-        host: info.sender.clone(),
-        layout: msg.board,
-    }
-
-    let ch1 = Character {
-        id: 0,
-        health: 100,
-        abilities: [Fire, Electric],
-        pos-x: 0,
-        pos-y: 0,
-    }
     
     set_contract_version(deps.storage, CONTRACT_NAME, CONTRACT_VERSION)?;
-    STATE.save(deps.storage, &state)?;
-    BOARD.save(deps.storage, &board)?;
+    STUDENTACC.save(deps.storage, &studentacc)?; 
 
     Ok(Response::new()
-        .add_attribute("method", "instantiate")
-        .add_attribute("owner", info.sender)
-        .add_attribute("count", msg.count.to_string()))
-        .add_attribute("host", info.sender)
-        .add_attribute("layout", msg.board)
+        .add_attribute("method", "instantiate"))
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
@@ -57,40 +41,82 @@ pub fn execute(
     msg: ExecuteMsg,
 ) -> Result<Response, ContractError> {
     match msg {
-        ExecuteMsg::Move { direction } => try_move(deps, info, direction),
-        ExecuteMsg::Attack { direction } => try_attack(deps, info, direction),
+        //ExecuteMsg::NewStudentAcc { studentname, studentid, universitites, degrees } => try_new_student(deps, info, studentname, studentid, universitites, degrees),
+        ExecuteMsg::AddUniversity { studentid, university } => try_add_uni(deps, info, studentid, university),
+        ExecuteMsg::RemoveUniversity { studentid, university } => try_remove_uni(deps, info, studentid, university),
+        ExecuteMsg::AddDegree { studentid, degree } => try_add_degree(deps, info, studentid, degree),
+        ExecuteMsg::RemoveDegree { studentid, degree } => try_remove_degree(deps, info, studentid, degree),
     }
 }
 
-pub fn try_move(deps: DepsMut, info: MessageInfo, direction: i32) -> Result<Response, ContractError> {
-    STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
+/*pub fn try_new_student(deps: DepsMut, info: MessageInfo, studentname: String, studentid: i32, universitites: [String], degrees: [String]) -> Result<Response, ContractError> {
+    /*STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
         state.count += 1;
         Ok(state)
     })?;
 
-    Ok(Response::new().add_attribute("method", "try_increment"))
-}
-pub fn try_attack(deps: DepsMut, info: MessageInfo, direction: i32) -> Result<Response, ContractError> {
-    STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
+    Ok(Response::new().add_attribute("method", "try_increment"))*/
+    Ok(Response::new())
+}*/
+
+pub fn try_add_uni(deps: DepsMut, info: MessageInfo, studentid: i32, university: String) -> Result<Response, ContractError> {
+    /*STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
         if info.sender != state.owner {
             return Err(ContractError::Unauthorized {});
         }
         state.count = count;
         Ok(state)
     })?;
-    Ok(Response::new().add_attribute("method", "reset"))
+    Ok(Response::new().add_attribute("method", "reset"))*/
+    Ok(Response::new())
+}
+
+pub fn try_remove_uni(deps: DepsMut, info: MessageInfo, studentid: i32, university: String) -> Result<Response, ContractError> {
+    /*STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
+        if info.sender != state.owner {
+            return Err(ContractError::Unauthorized {});
+        }
+        state.count = count;
+        Ok(state)
+    })?;
+    Ok(Response::new().add_attribute("method", "reset"))*/
+    Ok(Response::new())
+}
+
+pub fn try_add_degree(deps: DepsMut, info: MessageInfo, studentid: i32, degree: String) -> Result<Response, ContractError> {
+    /*STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
+        if info.sender != state.owner {
+            return Err(ContractError::Unauthorized {});
+        }
+        state.count = count;
+        Ok(state)
+    })?;
+    Ok(Response::new().add_attribute("method", "reset"))*/
+    Ok(Response::new())
+}
+
+pub fn try_remove_degree(deps: DepsMut, info: MessageInfo, studentid: i32, degree: String) -> Result<Response, ContractError> {
+    /*STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
+        if info.sender != state.owner {
+            return Err(ContractError::Unauthorized {});
+        }
+        state.count = count;
+        Ok(state)
+    })?;
+    Ok(Response::new().add_attribute("method", "reset"))*/
+    Ok(Response::new())
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
-        QueryMsg::GetPos {} => to_binary(&char_position(deps)?),
+        QueryMsg::GetStudentAcc { studentid } => to_binary(&get_student_acc(deps, studentid)?),
     }
 }
 
-fn char_position(deps: Deps) -> StdResult<CountResponse> {
-    let state = STATE.load(deps.storage)?;
-    Ok(CountResponse { count: state.count })
+fn get_student_acc(deps: Deps, studentid: i32) -> StdResult<GetStudentAccResponse> {
+    let studentacc = STUDENTACC.load(deps.storage)?;
+    Ok(GetStudentAccResponse { studentname: studentacc.studentname, studentid: studentacc.studentid, universitites: studentacc.universitites, degrees: studentacc.degrees })
 }
 
 #[cfg(test)]

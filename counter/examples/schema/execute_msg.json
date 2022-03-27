@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExecuteMsg",
+  "anyOf": [
+    {
+      "type": "object",
+      "required": [
+        "move"
+      ],
+      "properties": {
+        "move": {
+          "type": "object",
+          "required": [
+            "direction"
+          ],
+          "properties": {
+            "direction": {
+              "type": "integer",
+              "format": "int8"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "attack"
+      ],
+      "properties": {
+        "attack": {
+          "type": "object",
+          "required": [
+            "direction"
+          ],
+          "properties": {
+            "direction": {
+              "type": "integer",
+              "format": "int8"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

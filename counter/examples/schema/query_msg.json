@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "QueryMsg",
+  "anyOf": [
+    {
+      "type": "object",
+      "required": [
+        "get_pos"
+      ],
+      "properties": {
+        "get_pos": {
+          "type": "object",
+          "required": [
+            "id"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_health"
+      ],
+      "properties": {
+        "get_health": {
+          "type": "object",
+          "required": [
+            "health"
+          ],
+          "properties": {
+            "health": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

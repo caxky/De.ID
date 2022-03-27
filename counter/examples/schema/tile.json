@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Tile",
+  "type": "object",
+  "required": [
+    "damage",
+    "moveable",
+    "tiletype"
+  ],
+  "properties": {
+    "damage": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "moveable": {
+      "type": "boolean"
+    },
+    "tiletype": {
+      "$ref": "#/definitions/TileType"
+    }
+  },
+  "definitions": {
+    "TileType": {
+      "anyOf": [
+        {
+          "type": "object",
+          "required": [
+            "Blockade"
+          ],
+          "properties": {
+            "Blockade": {
+              "type": "object"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "DamageInducer"
+          ],
+          "properties": {
+            "DamageInducer": {
+              "type": "object",
+              "required": [
+                "damage"
+              ],
+              "properties": {
+                "damage": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "Normal"
+          ],
+          "properties": {
+            "Normal": {
+              "type": "object"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

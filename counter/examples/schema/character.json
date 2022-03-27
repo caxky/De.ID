@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Character",
+  "type": "object",
+  "required": [
+    "abilities",
+    "health",
+    "id",
+    "posx",
+    "posy"
+  ],
+  "properties": {
+    "abilities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/AbilityType"
+      },
+      "maxItems": 2,
+      "minItems": 2
+    },
+    "health": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "id": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "posx": {
+      "type": "integer",
+      "format": "int8"
+    },
+    "posy": {
+      "type": "integer",
+      "format": "int8"
+    }
+  },
+  "definitions": {
+    "AbilityType": {
+      "type": "string",
+      "enum": [
+        "Fire",
+        "Electric",
+        "Explosive",
+        "Blunt",
+        "Sharp"
+      ]
+    }
+  }
+}

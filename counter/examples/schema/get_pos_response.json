@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GetPosResponse",
+  "type": "object",
+  "required": [
+    "posx",
+    "posy"
+  ],
+  "properties": {
+    "posx": {
+      "type": "integer",
+      "format": "int8"
+    },
+    "posy": {
+      "type": "integer",
+      "format": "int8"
+    }
+  }
+}

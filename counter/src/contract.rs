@@ -20,6 +20,7 @@ pub fn instantiate(
 ) -> Result<Response, ContractError> {
 
     let studentacc = StudentAccreditation {
+        admin: msg.sender,
         studentname: msg.studentname,
         studentid: msg.studentid,
         universitites: msg.universitites,
@@ -41,7 +42,6 @@ pub fn execute(
     msg: ExecuteMsg,
 ) -> Result<Response, ContractError> {
     match msg {
-        //ExecuteMsg::NewStudentAcc { studentname, studentid, universitites, degrees } => try_new_student(deps, info, studentname, studentid, universitites, degrees),
         ExecuteMsg::AddUniversity { studentid, university } => try_add_uni(deps, info, studentid, university),
         ExecuteMsg::RemoveUniversity { studentid, university } => try_remove_uni(deps, info, studentid, university),
         ExecuteMsg::AddDegree { studentid, degree } => try_add_degree(deps, info, studentid, degree),
@@ -49,62 +49,58 @@ pub fn execute(
     }
 }
 
-/*pub fn try_new_student(deps: DepsMut, info: MessageInfo, studentname: String, studentid: i32, universitites: [String], degrees: [String]) -> Result<Response, ContractError> {
-    /*STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
-        state.count += 1;
-        Ok(state)
-    })?;
-
-    Ok(Response::new().add_attribute("method", "try_increment"))*/
-    Ok(Response::new())
-}*/
-
 pub fn try_add_uni(deps: DepsMut, info: MessageInfo, studentid: i32, university: String) -> Result<Response, ContractError> {
-    /*STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
-        if info.sender != state.owner {
+    STUDENTACC.update(deps.storage, |mut studentacc| -> Result<_, ContractError> {
+        if info.sender != studentacc.admin {
             return Err(ContractError::Unauthorized {});
         }
-        state.count = count;
-        Ok(state)
+        studentacc.universitites.insert(university, studentacc.universitites.len());
+        Ok(studentacc)
     })?;
-    Ok(Response::new().add_attribute("method", "reset"))*/
-    Ok(Response::new())
+    Ok(Response::new().add_attribute("method", "add_uni"))
 }
 
 pub fn try_remove_uni(deps: DepsMut, info: MessageInfo, studentid: i32, university: String) -> Result<Response, ContractError> {
-    /*STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
-        if info.sender != state.owner {
+    STUDENTACC.update(deps.storage, |mut studentacc| -> Result<_, ContractError> {
+        if info.sender != studentacc.admin {
             return Err(ContractError::Unauthorized {});
         }
-        state.count = count;
-        Ok(state)
+        let index = studentacc.universitites
+        .iter()
+        .position(|&x| x == university)
+        .unwrap();
+
+        studentacc.universitites.remove(index);;
+        Ok(studentacc)
     })?;
-    Ok(Response::new().add_attribute("method", "reset"))*/
-    Ok(Response::new())
+    Ok(Response::new().add_attribute("method", "remove_university"))
 }
 
 pub fn try_add_degree(deps: DepsMut, info: MessageInfo, studentid: i32, degree: String) -> Result<Response, ContractError> {
-    /*STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
-        if info.sender != state.owner {
+    STUDENTACC.update(deps.storage, |mut studentacc| -> Result<_, ContractError> {
+        if info.sender != studentacc.admin {
             return Err(ContractError::Unauthorized {});
         }
-        state.count = count;
-        Ok(state)
+        studentacc.degrees.insert(degree, studentacc.degrees.len());
+        Ok(studentacc)
     })?;
-    Ok(Response::new().add_attribute("method", "reset"))*/
-    Ok(Response::new())
+    Ok(Response::new().add_attribute("method", "add_degree"))
 }
 
 pub fn try_remove_degree(deps: DepsMut, info: MessageInfo, studentid: i32, degree: String) -> Result<Response, ContractError> {
-    /*STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
-        if info.sender != state.owner {
+    STUDENTACC.update(deps.storage, |mut studentacc| -> Result<_, ContractError> {
+        if info.sender != studentacc.admin {
             return Err(ContractError::Unauthorized {});
         }
-        state.count = count;
-        Ok(state)
+        let index = studentacc.degrees
+        .iter()
+        .position(|&x| x == degree)
+        .unwrap();
+
+        studentacc.degrees.remove(index);;
+        Ok(studentacc)
     })?;
-    Ok(Response::new().add_attribute("method", "reset"))*/
-    Ok(Response::new())
+    Ok(Response::new().add_attribute("method", "remove_degree"))
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
